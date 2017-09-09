@@ -9,19 +9,81 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Course Description
+This course builds on what you learned in Data Manipulation in R with dplyr by showing you how to combine data sets with dplyr's two table verbs. In the real world, data comes split across many data sets, but dplyr's core functions are designed to work with single tables of data. In this course, you'll learn the best ways to combine data sets into single tables. You'll learn how to augment columns from one data set with columns from another with mutating joins, how to filter one data set against another with filtering joins, and how to sift through data sets with set operations. Along the way, you'll discover the best practices for building data sets and troubleshooting joins with dplyr. Afterwards, you’ll be well on your way to data manipulation mastery!
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r}
 
-```{r cars}
-summary(cars)
+#install.packages("dplyr")
+#install.packages("readr")
+
+library("dplyr")
+library("readr")
+library("tibble")
+
+url <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/albums.csv"  
+url <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/artists.csv"
+url <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/bands.csv"
+url <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/songs.csv"
+
+#download.file(url, "songs.csv")
+
+
+albums <- read_csv("albums.csv")
+artists <- read_csv("artists.csv")
+bands <- read_csv("bands.csv")
+songs <- read_csv("songs.csv")
+
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+## Mutating joins
+Mutating joins add new variables to one dataset from another dataset, matching observations across rows in the process. This chapter will explain the various ways you can join datasets together and what happens when you do.
+
+### A basic join
+
+As Garrett mentioned in the video, left_join() is the basic join function in dplyr. You can use it whenever you want to augment a data frame with information from another data frame.
+
+For example, left_join(x, y) joins y to x. The second dataset you specify is joined to the first dataset. Keep that in mind as you go through the course.
+
+For this exercise, the code in the editor sets up a left join but doesn't finish it. It's up to you to complete it.
+
+Instructions
+Complete the code to join artists to bands. bands2 should contain all of the information in bands supplemented with information in artists.
+Print bands2 to the console to see the result.
+
+```{r}
+# Complete the code to join artists to bands
+bands2 <- left_join(bands, artists, by = c("first", "last") )
+
+# Examine the results
+bands2
+
+
+```
+
+
+
+
+## Filtering joins and set operations
+Filtering joins and set operations combine information from datasets without adding new variables. Filtering joins filter the observations of one dataset based on whether or not they occur in a second dataset. Set operations use combinations of observations from both datasets to create a new dataset.
+
+
+## Assembling data
+This chapter will show you how to build datasets from basic elements: vectors, lists, and individual datasets that do not require a join. dplyr contains a set of functions for assembling data that work more intuitively than base R's functions. The chapter will also look at when dplyr does and does not use data type coercion.
+
+
+
+## Advanced joining
+Now that you have the basics, let's dive deep into the mechanics of joins. This chapter will show you how to spot common join problems, how to join based on multiple or mismatched keys, how to join multiple tables, and how to recreate dplyr's joins with SQL and base R.
+
+
+## Case study
+You know the ins and outs of two-table verbs with dplyr, but your knowledge is untried! Let's cement what you've learned with a real world application.
+
+
+
 
 ```{r pressure, echo=FALSE}
 plot(pressure)
