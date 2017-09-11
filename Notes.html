@@ -141,12 +141,24 @@ library(&quot;dplyr&quot;)</code></pre>
 <pre class="r"><code>library(&quot;readr&quot;)
 library(&quot;tibble&quot;)
 
-url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/albums.csv&quot;  
-url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/artists.csv&quot;
-url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/bands.csv&quot;
-url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/songs.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/albums.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/artists.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/bands.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/songs.csv&quot;
+#url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/labels.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/tracks.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/matches.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/aerosmith.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/greatest_hits.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/live.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/definitive.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/complete.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/soundtrack.csv&quot;
 
-#download.file(url, &quot;songs.csv&quot;)
+
+
+
+# download.file(url, &quot;soundtrack.csv&quot;)
 
 
 albums &lt;- read_csv(&quot;albums.csv&quot;)</code></pre>
@@ -177,6 +189,65 @@ albums &lt;- read_csv(&quot;albums.csv&quot;)</code></pre>
 ##   album = col_character(),
 ##   first = col_character(),
 ##   last = col_character()
+## )</code></pre>
+<pre class="r"><code>labels &lt;- read_csv(&quot;labels.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   album = col_character(),
+##   label = col_character()
+## )</code></pre>
+<pre class="r"><code>tracks &lt;- read_csv(&quot;tracks.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   track = col_character(),
+##   band = col_character(),
+##   label = col_character(),
+##   year = col_integer(),
+##   first = col_character(),
+##   last = col_character()
+## )</code></pre>
+<pre class="r"><code>matches &lt;- read_csv(&quot;matches.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   band = col_character(),
+##   year = col_integer(),
+##   first = col_character()
+## )</code></pre>
+<pre class="r"><code>aerosmith &lt;- read_csv(&quot;aerosmith.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   song = col_character(),
+##   length = col_time(format = &quot;&quot;)
+## )</code></pre>
+<pre class="r"><code>greatest_hits &lt;- read_csv(&quot;greatest_hits.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   song = col_character(),
+##   length = col_time(format = &quot;&quot;)
+## )</code></pre>
+<pre class="r"><code>live &lt;- read_csv(&quot;live.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   song = col_character(),
+##   length = col_time(format = &quot;&quot;)
+## )</code></pre>
+<pre class="r"><code>definitive &lt;- read_csv(&quot;definitive.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   song = col_character(),
+##   album = col_character()
+## )</code></pre>
+<pre class="r"><code>complete &lt;- read_csv(&quot;complete.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   song = col_character(),
+##   album = col_character()
+## )</code></pre>
+<pre class="r"><code>soundtrack &lt;- read_csv(&quot;soundtrack.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   song = col_character(),
+##   album = col_character()
 ## )</code></pre>
 </div>
 <div id="mutating-joins" class="section level2">
@@ -371,6 +442,370 @@ artists %&gt;%
 <div id="filtering-joins-and-set-operations" class="section level2">
 <h2>Filtering joins and set operations</h2>
 <p>Filtering joins and set operations combine information from datasets without adding new variables. Filtering joins filter the observations of one dataset based on whether or not they occur in a second dataset. Set operations use combinations of observations from both datasets to create a new dataset.</p>
+<div id="apply-a-semi-join" class="section level3">
+<h3>Apply a semi-join</h3>
+<p>As you saw in the video, semi-joins provide a concise way to filter data from the first dataset based on information in a second dataset.</p>
+<p>For example, the code in the editor uses semi_join() to create a data frame of the artists in artists who have written a song in songs.</p>
+<p>Instructions Run the semi_join() command to see its output. Then fill in the blanks of the right_join(), filter(), and select() calls to create the same result.</p>
+<pre class="r"><code># View the output of semi_join()
+artists %&gt;% 
+  semi_join(songs, by = c(&quot;first&quot;, &quot;last&quot;))</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   first      last instrument
+##   &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;
+## 1  John    Lennon     Guitar
+## 2  Paul McCartney       Bass
+## 3   Tom     Jones     Vocals</code></pre>
+<pre class="r"><code># Create the same result
+artists %&gt;% 
+  right_join(songs, by = c(&quot;first&quot;, &quot;last&quot;)) %&gt;% 
+  filter(!is.na(instrument)) %&gt;% 
+  select(first, last, instrument)</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   first      last instrument
+##   &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;
+## 1  John    Lennon     Guitar
+## 2  Paul McCartney       Bass
+## 3   Tom     Jones     Vocals</code></pre>
+<p>Exploring with semi-joins</p>
+<p>Semi-joins provide a useful way to explore the connections between multiple tables of data.</p>
+<p>For example, you can use a semi-join to determine the number of albums in the albums dataset that were made by a band in the bands dataset.</p>
+<p>Instructions For the first pipe, use semi_join() to collect the albums in albums that were made by a band in bands. For the second pipe, use nrow() to count how many albums were made by a band in the dataset.</p>
+<pre class="r"><code>albums %&gt;% 
+  # Collect the albums made by a band
+  semi_join(bands, by = &quot;band&quot;) %&gt;% 
+  # Count the albums made by a band
+  nrow()</code></pre>
+<pre><code>## [1] 5</code></pre>
+</div>
+<div id="a-more-precise-way-to-filter" class="section level3">
+<h3>A more precise way to filter?</h3>
+<p>We’ve attempted to rewrite this semi-join as a filter. Will it return the same results?</p>
+<pre class="r"><code>tracks %&gt;% semi_join(
+  matches,
+  by = c(&quot;band&quot;, &quot;year&quot;, &quot;first&quot;)
+)</code></pre>
+<pre><code>## # A tibble: 4 x 6
+##               track                band      label  year first      last
+##               &lt;chr&gt;               &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;
+## 1 Can't Buy Me Love         The Beatles Parlophone  1964  Paul McCartney
+## 2             Help!         The Beatles Parlophone  1965  John    Lennon
+## 3    Ticket to Ride         The Beatles Parlophone  1965  John    Lennon
+## 4    Homeward Bound Simon and Garfunkel   Columbia  1966  Paul     Simon</code></pre>
+<pre class="r"><code>tracks %&gt;% filter(
+  (band == &quot;The Beatles&quot; &amp; 
+     year == 1964 &amp; first == &quot;Paul&quot;) |
+    (band == &quot;The Beatles&quot; &amp; 
+       year == 1965 &amp; first == &quot;John&quot;) |
+    (band == &quot;Simon and Garfunkel&quot; &amp; 
+       year == 1966 &amp; first == &quot;Paul&quot;)
+)</code></pre>
+<pre><code>## # A tibble: 4 x 6
+##               track                band      label  year first      last
+##               &lt;chr&gt;               &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;
+## 1 Can't Buy Me Love         The Beatles Parlophone  1964  Paul McCartney
+## 2             Help!         The Beatles Parlophone  1965  John    Lennon
+## 3    Ticket to Ride         The Beatles Parlophone  1965  John    Lennon
+## 4    Homeward Bound Simon and Garfunkel   Columbia  1966  Paul     Simon</code></pre>
+<p>Apply another anti-join</p>
+<p>Anti-joins with anti_join() also provide a great way to diagnose joins that go wrong.</p>
+<p>For example, they can help you zero-in on rows that have capitalization or spelling errors in the keys. These things will make your primary and secondary keys appear different to R, even though you know they refer to the same thing.</p>
+<p>Instructions labels describes the record labels of the albums in albums. Compare the spellings of album names in labels with the names in albums. Are any of the album names of labels mis-entered? Use anti_join() to check. Note: Don’t forget to mention the by argument.</p>
+<pre class="r"><code>artists</code></pre>
+<pre><code>## # A tibble: 16 x 3
+##     first      last instrument
+##     &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;
+##  1  Jimmy   Buffett     Guitar
+##  2 George  Harrison     Guitar
+##  3   Mick    Jagger     Vocals
+##  4    Tom     Jones     Vocals
+##  5   Davy     Jones     Vocals
+##  6   John    Lennon     Guitar
+##  7   Paul McCartney       Bass
+##  8  Jimmy      Page     Guitar
+##  9    Joe     Perry     Guitar
+## 10  Elvis   Presley     Vocals
+## 11  Keith  Richards     Guitar
+## 12   Paul     Simon     Guitar
+## 13  Ringo     Starr      Drums
+## 14    Joe     Walsh     Guitar
+## 15  Brian    Wilson     Vocals
+## 16  Nancy    Wilson     Vocals</code></pre>
+<pre class="r"><code>bands</code></pre>
+<pre><code>## # A tibble: 13 x 3
+##        first      last               band
+##        &lt;chr&gt;     &lt;chr&gt;              &lt;chr&gt;
+##  1      John    Bonham       Led Zeppelin
+##  2 John Paul     Jones       Led Zeppelin
+##  3     Jimmy      Page       Led Zeppelin
+##  4    Robert     Plant       Led Zeppelin
+##  5    George  Harrison        The Beatles
+##  6      John    Lennon        The Beatles
+##  7      Paul McCartney        The Beatles
+##  8     Ringo     Starr        The Beatles
+##  9     Jimmy   Buffett  The Coral Reefers
+## 10      Mick    Jagger The Rolling Stones
+## 11     Keith  Richards The Rolling Stones
+## 12   Charlie     Watts The Rolling Stones
+## 13    Ronnie      Wood The Rolling Stones</code></pre>
+<pre class="r"><code># Return rows of artists that don't have bands info
+artists %&gt;% 
+  anti_join(bands, by = c(&quot;first&quot;, &quot;last&quot;))</code></pre>
+<pre><code>## # A tibble: 8 x 3
+##   first    last instrument
+##   &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;
+## 1   Joe   Perry     Guitar
+## 2 Nancy  Wilson     Vocals
+## 3 Elvis Presley     Vocals
+## 4   Joe   Walsh     Guitar
+## 5   Tom   Jones     Vocals
+## 6 Brian  Wilson     Vocals
+## 7  Paul   Simon     Guitar
+## 8  Davy   Jones     Vocals</code></pre>
+<p>Which filtering join?</p>
+<p>Think you have filtering joins down? Let’s check.</p>
+<p>Which filtering join would you use to determine how many rows in songs match a label in labels?</p>
+<p>Instructions Determine which key joins labels and songs. Use a filtering join to find the rows of songs that match a row in labels. Use nrow() to determine how many matches exist between labels and songs.</p>
+<pre class="r"><code># Determine which key joins labels and songs
+labels</code></pre>
+<pre><code>## # A tibble: 9 x 2
+##                       album           label
+##                       &lt;chr&gt;           &lt;chr&gt;
+## 1                Abbey Road           Apple
+## 2         A Hard Days Night      Parlophone
+## 3      Magical Mystery Tour      Parlophone
+## 4           Led Zeppelin IV        Atlantic
+## 5 The Dark Side of the Moon         Harvest
+## 6          Hotel California          Asylum
+## 7                   Rumours Warner Brothers
+## 8                 Aerosmith        Columbia
+## 9          Beggar's Banquet           Decca</code></pre>
+<pre class="r"><code>songs</code></pre>
+<pre><code>## # A tibble: 4 x 4
+##               song                album  first      last
+##              &lt;chr&gt;                &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;
+## 1    Come Together           Abbey Road   John    Lennon
+## 2         Dream On            Aerosmith Steven     Tyler
+## 3   Hello, Goodbye Magical Mystery Tour   Paul McCartney
+## 4 It's Not Unusual     Along Came Jones    Tom     Jones</code></pre>
+<pre class="r"><code># Check your understanding
+songs %&gt;% 
+  # Find the rows of songs that match a row in labels
+  semi_join(labels, by = &quot;album&quot;) %&gt;% 
+  # Number of matches between labels and songs
+  nrow()</code></pre>
+<pre><code>## [1] 3</code></pre>
+<p>How many songs are there?</p>
+<p>We have loaded two datasets in your workspace, aerosmith and greatest_hits, each of which represents an album from the band Aerosmith. Each row in either of the datasets is a song on that album.</p>
+<p>How many unique songs do these two albums contain in total?</p>
+<p>Instructions Use a set operation to create a dataset with every song contained on aerosmith and/or greatest_hits. Use nrow() to count the total number of songs.</p>
+<pre class="r"><code>aerosmith</code></pre>
+<pre><code>## # A tibble: 8 x 2
+##                song   length
+##               &lt;chr&gt;   &lt;time&gt;
+## 1           Make It 03:41:00
+## 2          Somebody 03:45:00
+## 3          Dream On 04:28:00
+## 4    One Way Street 07:00:00
+## 5          Mama Kin 04:25:00
+## 6 Write me a Letter 04:11:00
+## 7        Moving Out 05:03:00
+## 8   Walking the Dog 03:12:00</code></pre>
+<pre class="r"><code>greatest_hits</code></pre>
+<pre><code>## # A tibble: 17 x 2
+##                              song   length
+##                             &lt;chr&gt;   &lt;time&gt;
+##  1                       Dream On 04:28:00
+##  2                       Mama Kin 04:27:00
+##  3        Same Old Song and Dance 03:04:00
+##  4              Seasons of Winter 04:57:00
+##  5                  Sweet Emotion 03:15:00
+##  6                  Walk this Way 03:33:00
+##  7            Big Ten Inch Record 02:15:00
+##  8                     Last Child 03:28:00
+##  9             Back in the Saddle 04:41:00
+## 10                  Draw the Line 03:24:00
+## 11               Kings and Queens 03:48:00
+## 12                  Come Together 03:47:00
+## 13 Remember (Walking in the Sand) 04:05:00
+## 14              Lightning Strikes 04:28:00
+## 15            Chip Away the Stone 04:01:00
+## 16          Sweet Emotion (remix) 04:36:00
+## 17          One Way Street (live) 06:40:00</code></pre>
+<pre class="r"><code>aerosmith %&gt;% 
+  # Create the new dataset using a set operation
+  union(greatest_hits) %&gt;% 
+  # Count the total number of songs
+  nrow()</code></pre>
+<pre><code>## [1] 24</code></pre>
+<p>Greatest hits</p>
+<p>Which songs from Aerosmith made it onto Greatest Hits?</p>
+<p>Instructions Use a set operation to create a dataset containing every track that is in both Aerosmith and Greatest Hits.</p>
+<pre class="r"><code># Create the new dataset using a set operation
+aerosmith %&gt;% 
+  intersect(greatest_hits)</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##       song   length
+##      &lt;chr&gt;   &lt;time&gt;
+## 1 Dream On 04:28:00</code></pre>
+<p>Live! Bootleg songs</p>
+<p>live contains the songs from a third Aerosmith album, Live! Bootleg.</p>
+<p>Which songs are on Live! Bootleg but not on Greatest Hits? Notice that the length of songs may be different when they are performed live.</p>
+<p>Instructions Select just the song names from live. Select just the song names from greatest_hits. Use a set operation to create a dataset of songs in live that are not in greatest_hits.</p>
+<pre class="r"><code>live</code></pre>
+<pre><code>## # A tibble: 16 x 2
+##                                           song   length
+##                                          &lt;chr&gt;   &lt;time&gt;
+##  1                          Back in the Saddle 04:25:00
+##  2                               Sweet Emotion 04:42:00
+##  3                          Lord of the Thighs 07:18:00
+##  4                           Toys in the Attic 03:45:00
+##  5                                  Last Child 03:24:00
+##  6                               Come Together 04:51:00
+##  7                               Walk this Way 03:46:00
+##  8                               Sick as a Dog 04:42:00
+##  9                                    Dream On 04:31:00
+## 10                         Chip Away the Stone 04:12:00
+## 11                         Sight for Sore Eyes 03:18:00
+## 12                                    Mama Kin 03:43:00
+## 13                            S.O.S. (Too Bad) 02:46:00
+## 14                             I Ain't Got You 03:57:00
+## 15                Mother Popcorn/Draw the Line 11:35:00
+## 16 Train Kept A-Rollin'/Strangers in the Night 04:51:00</code></pre>
+<pre class="r"><code>greatest_hits</code></pre>
+<pre><code>## # A tibble: 17 x 2
+##                              song   length
+##                             &lt;chr&gt;   &lt;time&gt;
+##  1                       Dream On 04:28:00
+##  2                       Mama Kin 04:27:00
+##  3        Same Old Song and Dance 03:04:00
+##  4              Seasons of Winter 04:57:00
+##  5                  Sweet Emotion 03:15:00
+##  6                  Walk this Way 03:33:00
+##  7            Big Ten Inch Record 02:15:00
+##  8                     Last Child 03:28:00
+##  9             Back in the Saddle 04:41:00
+## 10                  Draw the Line 03:24:00
+## 11               Kings and Queens 03:48:00
+## 12                  Come Together 03:47:00
+## 13 Remember (Walking in the Sand) 04:05:00
+## 14              Lightning Strikes 04:28:00
+## 15            Chip Away the Stone 04:01:00
+## 16          Sweet Emotion (remix) 04:36:00
+## 17          One Way Street (live) 06:40:00</code></pre>
+<pre class="r"><code># Select the song names from live
+live_songs &lt;- live %&gt;% select(song)
+
+# Select the song names from greatest_hits
+greatest_songs &lt;- greatest_hits %&gt;% select(song)
+
+# Create the new dataset using a set operation
+live_songs %&gt;% 
+  setdiff(greatest_songs)</code></pre>
+<pre><code>## # A tibble: 8 x 1
+##                                          song
+##                                         &lt;chr&gt;
+## 1                          Lord of the Thighs
+## 2                           Toys in the Attic
+## 3                               Sick as a Dog
+## 4                         Sight for Sore Eyes
+## 5                            S.O.S. (Too Bad)
+## 6                             I Ain't Got You
+## 7                Mother Popcorn/Draw the Line
+## 8 Train Kept A-Rollin'/Strangers in the Night</code></pre>
+</div>
+<div id="multiple-operations" class="section level3">
+<h3>Multiple operations</h3>
+<p>There is no set operation to find rows that appear in one data frame or another, but not both. However, you can accomplish this by combining set operators, as Garrett showed in the video.</p>
+<p>Can you think of a combination that would answer the question, “Which songs appear on one of Live! Bootleg or Greatest Hits, but not both?”</p>
+<p>Instructions Select the songs from the live and greatest_hits datasets and call them live_songs and greatest_songs, respectively. Use the select() function to do this. Combine setdiff(), union(), and intersect() to return all of the songs that are in one of live_songs or greatest_songs, but not both. You will need to use all three functions and save some results along the way (i.e. you won’t be able to do this with a single pipe.)</p>
+<pre class="r"><code># Select songs from live and greatest_hits
+live_songs &lt;- live %&gt;%
+              select(song)
+
+greatest_songs &lt;- greatest_hits %&gt;%
+                  select(song)
+
+# Return the songs that only exist in one dataset
+
+live_songs %&gt;% 
+  setdiff(greatest_songs) %&gt;% 
+    union(greatest_songs %&gt;%
+    setdiff(live_songs))</code></pre>
+<pre><code>## # A tibble: 17 x 1
+##                                           song
+##                                          &lt;chr&gt;
+##  1              Remember (Walking in the Sand)
+##  2                         Big Ten Inch Record
+##  3                          Lord of the Thighs
+##  4                           Lightning Strikes
+##  5                           Toys in the Attic
+##  6                         Sight for Sore Eyes
+##  7                       Sweet Emotion (remix)
+##  8                               Draw the Line
+##  9                            S.O.S. (Too Bad)
+## 10                       One Way Street (live)
+## 11                Mother Popcorn/Draw the Line
+## 12                               Sick as a Dog
+## 13                             I Ain't Got You
+## 14                     Same Old Song and Dance
+## 15                            Kings and Queens
+## 16 Train Kept A-Rollin'/Strangers in the Night
+## 17                           Seasons of Winter</code></pre>
+</div>
+<div id="apply-setequal" class="section level3">
+<h3>Apply setequal</h3>
+<p>definitive and complete contain the songs that appear in competing Led Zeppelin anthologies: The Definitive Collection and The Complete Studio Recordings, respectively.</p>
+<p>Both anthologies claim to contain the complete studio recordings of Led Zeppelin, but do the anthologies contain the same exact songs?</p>
+<p>Instructions Use identical() to determine whether definitive and complete contain the same songs in the same order. Use setequal() to determine whether definitive and complete contain the same songs in any order. Use setdiff() to see which songs (if any) are in definitive but not complete. Use setdiff() to see which songs (if any) are in complete but not definitive.</p>
+<pre class="r"><code># Check if same order: definitive and complete
+definitive %&gt;%
+  identical(complete)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code># Check if any order: definitive and complete
+definitive %&gt;%
+  setequal(complete)</code></pre>
+<pre><code>## FALSE: Different number of rows</code></pre>
+<pre class="r"><code># Songs in definitive but not complete
+definitive %&gt;%
+  setdiff(complete)</code></pre>
+<pre><code>## # A tibble: 15 x 2
+##                           song                     album
+##                          &lt;chr&gt;                     &lt;chr&gt;
+##  1               Rock and Roll The Song Remains the Same
+##  2             Celebration Day The Song Remains the Same
+##  3                   Black Dog The Song Remains the Same
+##  4 Over the Hills and Far Away The Song Remains the Same
+##  5          Misty Mountain Hop The Song Remains the Same
+##  6  Since I've Been Loving You The Song Remains the Same
+##  7                  No Quarter The Song Remains the Same
+##  8   The Song Remains the Same The Song Remains the Same
+##  9               The Rain Song The Song Remains the Same
+## 10                   The Ocean The Song Remains the Same
+## 11          Dazed and Confused The Song Remains the Same
+## 12          Stairway to Heaven The Song Remains the Same
+## 13                   Moby Dick The Song Remains the Same
+## 14                Heartbreaker The Song Remains the Same
+## 15            Whole Lotta Love The Song Remains the Same</code></pre>
+<pre class="r"><code># Songs in complete but not definitive
+complete %&gt;%
+  setdiff(definitive)</code></pre>
+<pre><code>## # A tibble: 0 x 2
+## # ... with 2 variables: song &lt;chr&gt;, album &lt;chr&gt;</code></pre>
+</div>
+<div id="apply-setequal-again" class="section level3">
+<h3>Apply setequal again</h3>
+<p>A few exercises ago, you saw that an intersect() is analagous to a semi_join() when two datasets contain the same variables and each variable is used in the key.</p>
+<p>Under these conditions, setdiff() is also analagous to one of the filtering joins.</p>
+<pre class="r"><code># Check if same order: definitive and union of complete and soundtrack
+definitive %&gt;% 
+  identical(complete %&gt;% union(soundtrack)) </code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code># Check if any order: definitive and union of complete and soundtrack
+definitive %&gt;% 
+  setequal(complete %&gt;% union(soundtrack)) </code></pre>
+<pre><code>## TRUE</code></pre>
+</div>
 </div>
 <div id="assembling-data" class="section level2">
 <h2>Assembling data</h2>
