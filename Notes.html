@@ -128,8 +128,14 @@ $(document).ready(function () {
 <p>This course builds on what you learned in Data Manipulation in R with dplyr by showing you how to combine data sets with dplyr’s two table verbs. In the real world, data comes split across many data sets, but dplyr’s core functions are designed to work with single tables of data. In this course, you’ll learn the best ways to combine data sets into single tables. You’ll learn how to augment columns from one data set with columns from another with mutating joins, how to filter one data set against another with filtering joins, and how to sift through data sets with set operations. Along the way, you’ll discover the best practices for building data sets and troubleshooting joins with dplyr. Afterwards, you’ll be well on your way to data manipulation mastery!</p>
 <pre class="r"><code>#install.packages(&quot;dplyr&quot;)
 #install.packages(&quot;readr&quot;)
-
-library(&quot;dplyr&quot;)</code></pre>
+install.packages(&quot;purrr&quot;)</code></pre>
+<pre><code>## Installing package into 'C:/Users/Data4thinking/Documents/R/Notes/R_notebook/Joining_Data_in_R_with_dplyr/packrat/lib/x86_64-w64-mingw32/3.4.1'
+## (as 'lib' is unspecified)</code></pre>
+<pre><code>## package 'purrr' successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\Data4thinking\AppData\Local\Temp\RtmpSSqQkL\downloaded_packages</code></pre>
+<pre class="r"><code>library(&quot;dplyr&quot;)</code></pre>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
 <pre><code>## The following objects are masked from 'package:stats':
@@ -140,6 +146,7 @@ library(&quot;dplyr&quot;)</code></pre>
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(&quot;readr&quot;)
 library(&quot;tibble&quot;)
+library(&quot;purrr&quot;)
 
 # url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/albums.csv&quot;
 # url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/artists.csv&quot;
@@ -172,15 +179,26 @@ library(&quot;tibble&quot;)
 # url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/michael8.csv&quot;
 # url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/michael9.csv&quot;
 # url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/michael10.csv&quot;
-
-
-
-
-
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/seventies.rds&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/eighties.rds&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/stage_writers.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/composers.csv&quot;
+# # url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/two_songs.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/singers.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/movie_studios.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/elvis_movies.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/elvis_songs.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/movie_songs.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/movie_directors.csv&quot;
+ # url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/movie_years.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/more_bands.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/supergroups.csv&quot;
+# url &lt;- &quot;http://s3.amazonaws.com/assets.datacamp.com/production/course_1074/datasets/more_artists.csv&quot;
 # 
 # 
-# download.file(url, &quot;michael10.csv&quot;)
-
+# 
+# 
+#   download.file(url, &quot;more_artists.csv&quot;)
 
 albums &lt;- read_csv(&quot;albums.csv&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
@@ -399,7 +417,102 @@ michael1 &lt;- read_csv(&quot;michael1.csv&quot;)</code></pre>
 ## )</code></pre>
 <pre class="r"><code>michael &lt;- list(&quot;Got to Be There&quot; = michael1, &quot;Ben&quot; = michael2,  &quot;Music &amp; Me&quot; = michael3,  
                 &quot;Forever, Michael&quot; = michael4, &quot;Off the Wall&quot; = michael5,  &quot;Thriller&quot; = michael6, 
-                &quot;Bad&quot; = michael7,  &quot;Dangerous&quot; = michael8, &quot;HIStory&quot; = michael9,  &quot;Invincible&quot; = michael10)</code></pre>
+                &quot;Bad&quot; = michael7,  &quot;Dangerous&quot; = michael8, &quot;HIStory&quot; = michael9,  &quot;Invincible&quot; = michael10)
+
+# seventies &lt;- readRDS(&quot;seventies.rds&quot;)
+# 
+# eighties &lt;- read_rds(&quot;eighties.rds&quot;)
+
+
+stage_songs &lt;- read.csv(&quot;stage_songs.csv&quot;, row.names = 1, stringsAsFactors = FALSE)
+stage_writers &lt;- read.csv(&quot;stage_writers.csv&quot;, stringsAsFactors = FALSE)
+
+#Chapter 4
+
+shows &lt;- read_csv(&quot;shows.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   musical = col_character(),
+##   year = col_integer()
+## )</code></pre>
+<pre class="r"><code>composers &lt;- read_csv(&quot;composers.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   musical = col_character(),
+##   composer = col_character()
+## )</code></pre>
+<pre class="r"><code>two_songs &lt;-  read_csv(&quot;two_songs.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   song = col_character(),
+##   movie = col_character()
+## )</code></pre>
+<pre class="r"><code>singers &lt;- read_csv(&quot;singers.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   movie = col_character(),
+##   singer = col_character()
+## )</code></pre>
+<pre class="r"><code>movie_studios &lt;- read_csv(&quot;movie_studios.csv&quot;) </code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   movie = col_character(),
+##   name = col_character()
+## )</code></pre>
+<pre class="r"><code>elvis_movies &lt;- read_csv(&quot;elvis_movies.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   name = col_character(),
+##   year = col_integer()
+## )</code></pre>
+<pre class="r"><code>elvis_songs &lt;- read_csv(&quot;elvis_songs.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   name = col_character(),
+##   movie = col_character()
+## )</code></pre>
+<pre class="r"><code>movie_directors &lt;- read_csv(&quot;movie_directors.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   name = col_character(),
+##   director = col_character(),
+##   studio = col_character()
+## )</code></pre>
+<pre class="r"><code>movie_songs &lt;- read_csv(&quot;movie_songs.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   song = col_character(),
+##   movie = col_character(),
+##   name = col_character()
+## )</code></pre>
+<pre class="r"><code>movie_years &lt;- read_csv(&quot;movie_years.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   movie = col_character(),
+##   name = col_character(),
+##   year = col_integer()
+## )</code></pre>
+<pre class="r"><code>more_artists &lt;- read_csv(&quot;more_artists.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   first = col_character(),
+##   last = col_character(),
+##   instrument = col_character()
+## )</code></pre>
+<pre class="r"><code>more_bands &lt;- read_csv(&quot;more_bands.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   band = col_character(),
+##   first = col_character(),
+##   last = col_character()
+## )</code></pre>
+<pre class="r"><code>supergroups &lt;- read_csv(&quot;supergroups.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   supergroup = col_character(),
+##   first = col_character(),
+##   last = col_character()
+## )</code></pre>
 </div>
 <div id="mutating-joins" class="section level2">
 <h2>Mutating joins</h2>
@@ -604,9 +717,9 @@ artists %&gt;%
 <pre><code>## # A tibble: 3 x 3
 ##   first      last instrument
 ##   &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;
-## 1  John    Lennon     Guitar
-## 2  Paul McCartney       Bass
-## 3   Tom     Jones     Vocals</code></pre>
+## 1   Tom     Jones     Vocals
+## 2  John    Lennon     Guitar
+## 3  Paul McCartney       Bass</code></pre>
 <pre class="r"><code># Create the same result
 artists %&gt;% 
   right_join(songs, by = c(&quot;first&quot;, &quot;last&quot;)) %&gt;% 
@@ -705,14 +818,14 @@ artists %&gt;%
 <pre><code>## # A tibble: 8 x 3
 ##   first    last instrument
 ##   &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;
-## 1  Paul   Simon     Guitar
-## 2   Joe   Walsh     Guitar
-## 3   Tom   Jones     Vocals
-## 4 Nancy  Wilson     Vocals
-## 5 Elvis Presley     Vocals
-## 6   Joe   Perry     Guitar
-## 7  Davy   Jones     Vocals
-## 8 Brian  Wilson     Vocals</code></pre>
+## 1   Tom   Jones     Vocals
+## 2  Davy   Jones     Vocals
+## 3   Joe   Perry     Guitar
+## 4 Elvis Presley     Vocals
+## 5  Paul   Simon     Guitar
+## 6   Joe   Walsh     Guitar
+## 7 Brian  Wilson     Vocals
+## 8 Nancy  Wilson     Vocals</code></pre>
 <p>Which filtering join?</p>
 <p>Think you have filtering joins down? Let’s check.</p>
 <p>Which filtering join would you use to determine how many rows in songs match a label in labels?</p>
@@ -886,23 +999,23 @@ live_songs %&gt;%
 <pre><code>## # A tibble: 17 x 1
 ##                                           song
 ##                                          &lt;chr&gt;
-##  1 Train Kept A-Rollin'/Strangers in the Night
-##  2                     Same Old Song and Dance
-##  3                           Seasons of Winter
-##  4                         Big Ten Inch Record
-##  5                          Lord of the Thighs
+##  1                       One Way Street (live)
+##  2                           Lightning Strikes
+##  3                          Lord of the Thighs
+##  4                             I Ain't Got You
+##  5              Remember (Walking in the Sand)
 ##  6                               Sick as a Dog
-##  7                               Draw the Line
-##  8                             I Ain't Got You
-##  9                           Toys in the Attic
-## 10                            Kings and Queens
-## 11                         Sight for Sore Eyes
-## 12                           Lightning Strikes
-## 13              Remember (Walking in the Sand)
-## 14                            S.O.S. (Too Bad)
-## 15                       Sweet Emotion (remix)
-## 16                Mother Popcorn/Draw the Line
-## 17                       One Way Street (live)</code></pre>
+##  7                       Sweet Emotion (remix)
+##  8 Train Kept A-Rollin'/Strangers in the Night
+##  9                            Kings and Queens
+## 10                         Big Ten Inch Record
+## 11                           Seasons of Winter
+## 12                     Same Old Song and Dance
+## 13                               Draw the Line
+## 14                Mother Popcorn/Draw the Line
+## 15                            S.O.S. (Too Bad)
+## 16                         Sight for Sore Eyes
+## 17                           Toys in the Attic</code></pre>
 </div>
 <div id="apply-setequal" class="section level3">
 <h3>Apply setequal</h3>
@@ -1486,10 +1599,429 @@ michael</code></pre>
 ## 15          HIStory              You Are Not Alone
 ## 16       Invincible              You Rock My World</code></pre>
 </div>
+<div id="atomic-data-types" class="section level3">
+<h3>Atomic data types</h3>
+<p>all statement are correct</p>
+<p>Possible Answers R will coerce logicals and numerics to strings if strings are present. R will coerce logicals to numerics if numerics are present. as.character() will coerce factors to their labels as strings if strings are present. as.numeric() will coerce factors to their levels as numerics if numerics are present.</p>
+</div>
+<div id="dplyr-and-coercion" class="section level3">
+<h3>dplyr and coercion</h3>
+<p>How does dplyr extend R’s coercion rules? dplyr’s two table functions will…</p>
+<p>Possible Answers coerce two factors to a string if the factors have different levels. coerce two factors to a string if the factors have the same levels in a different order. return an error instead of coercing logicals, integers, and numerics to a character.</p>
+</div>
+<div id="determining-type" class="section level3">
+<h3>Determining type</h3>
+<p>Both seventies and eighties list the top selling albums in the US by year (for the 1970s and the 1980s). However, each stores year as a different data type:</p>
+<p>seventies stores year as a factor. eighties stores year as a character string. What will be the class of both$year after you run the code below? (Try to answer before running the code!)</p>
+</div>
 </div>
 <div id="advanced-joining" class="section level2">
 <h2>Advanced joining</h2>
 <p>Now that you have the basics, let’s dive deep into the mechanics of joins. This chapter will show you how to spot common join problems, how to join based on multiple or mismatched keys, how to join multiple tables, and how to recreate dplyr’s joins with SQL and base R.</p>
+<div id="spot-the-key" class="section level3">
+<h3>Spot the key</h3>
+<p>R’s data frames can store important information in the row.names attribute. This is not a tidy way to store data, but it does happen quite commonly. If the primary key of your dataset is stored in row.names, you will have trouble joining it to other datasets.</p>
+<p>For example, stage_songs contains information about songs that appear in musicals. However, it stores the primary key (song name) in the row.names attribute. As a result, you cannot access the key with a join function.</p>
+<p>One way to remedy this problem is to use the function rownames_to_column() from the tibble package. rownames_to_column() returns a copy of a dataset with the row names added to the data as a column.</p>
+<p>Instructions Load the tibble package. Use rownames_to_column() to add the row names of stage_songs to the data frame as a column named song. Left join stage_writers to stage_songs.</p>
+<pre class="r"><code>    # Load the tibble package
+library(&quot;tibble&quot;)
+
+stage_songs</code></pre>
+<pre><code>##                                     musical year
+## Children Will Listen         Into the Woods 1986
+## Maria                       West Side Story 1957
+## Memory                                 Cats 1981
+## The Music of the Night Phantom of the Opera 1986</code></pre>
+<pre class="r"><code>stage_writers</code></pre>
+<pre><code>##                     song            composer
+## 1   Children Will Listen    Stephen Sondheim
+## 2                  Maria   Leonard Bernstein
+## 3                 Memory Andrew Lloyd Webber
+## 4 The Music of the Night Andrew Lloyd Webber</code></pre>
+<pre class="r"><code>stage_songs %&gt;% 
+  # Add row names as a column named song
+  rownames_to_column(var = &quot;song&quot;) %&gt;% 
+  # Left join stage_writers to stage_songs
+  left_join(stage_writers, by = &quot;song&quot;)    </code></pre>
+<pre><code>##                     song              musical year            composer
+## 1   Children Will Listen       Into the Woods 1986    Stephen Sondheim
+## 2                  Maria      West Side Story 1957   Leonard Bernstein
+## 3                 Memory                 Cats 1981 Andrew Lloyd Webber
+## 4 The Music of the Night Phantom of the Opera 1986 Andrew Lloyd Webber</code></pre>
+</div>
+<div id="non-unique-keys" class="section level3">
+<h3>Non-unique keys</h3>
+<p>shows and composers provide some more information about songs that appear in musicals.</p>
+<p>You can join the two datasets by the musical column, which appears in both the datasets. However, you will run into a glitch: the values of musical do not uniquely identify the rows of composers. For example, two rows have the value “The Sound of Music” for musical and two other rows have the value “The King and I”.</p>
+<p>How many entries (rows) will dplyr create for The Sound of Music if you left join composers to shows by musical? 2</p>
+<pre class="r"><code>shows</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##                musical  year
+##                  &lt;chr&gt; &lt;int&gt;
+## 1   The Sound of Music  1959
+## 2       Into the Woods  1986
+## 3       The King and I  1951
+## 4      West Side Story  1957
+## 5                 Cats  1981
+## 6 Phantom of the Opera  1986</code></pre>
+<pre class="r"><code>composers</code></pre>
+<pre><code>## # A tibble: 8 x 2
+##                musical             composer
+##                  &lt;chr&gt;                &lt;chr&gt;
+## 1                 Cats  Andrew Lloyd Webber
+## 2       Into the Woods     Stephen Sondheim
+## 3 Phantom of the Opera  Andrew Lloyd Webber
+## 4       The King and I       Richard Rogers
+## 5       The King and I Oscar Hammerstein II
+## 6   The Sound of Music       Richard Rogers
+## 7   The Sound of Music Oscar Hammerstein II
+## 8      West Side Story    Leonard Bernstein</code></pre>
+<pre class="r"><code>composers %&gt;% left_join(shows, by = &quot;musical&quot;)</code></pre>
+<pre><code>## # A tibble: 8 x 3
+##                musical             composer  year
+##                  &lt;chr&gt;                &lt;chr&gt; &lt;int&gt;
+## 1                 Cats  Andrew Lloyd Webber  1981
+## 2       Into the Woods     Stephen Sondheim  1986
+## 3 Phantom of the Opera  Andrew Lloyd Webber  1986
+## 4       The King and I       Richard Rogers  1951
+## 5       The King and I Oscar Hammerstein II  1951
+## 6   The Sound of Music       Richard Rogers  1959
+## 7   The Sound of Music Oscar Hammerstein II  1959
+## 8      West Side Story    Leonard Bernstein  1957</code></pre>
+</div>
+<div id="two-non-unique-keys" class="section level3">
+<h3>Two non-unique keys</h3>
+<p>You saw in the last exercise that if a row in the primary dataset contains multiple matches in the secondary dataset, left_join() will duplicate the row once for every match. This is true for all of dplyr’s join functions.</p>
+<p>Now, let’s see how this rule would apply when the primary dataset contains duplicate key values.</p>
+<p>show_songs contains songs that appear in the musicals written by the composers. You can join the two by the musical column, but like composers, show_songs has two rows where musical == “The Sound of Music”.</p>
+<p>How many entries (rows) will exist for The Sound of Music if you left join composers to show_songs by musical?</p>
+<p>4</p>
+<p>Missing keys</p>
+<p>Julie Andrews is a famous singer who performed in The Sound of Music, which is documented in the singers data frame. The two_songs data frame records a couple of songs that she sang during her career.</p>
+<p>Unfortunately, when you join the datasets together, something odd happens. According to the result, who sings A Spoonful of Sugar? Why does this happen?</p>
+<p>You can avoid this outcome by removing rows that contain NAs in the keys before joining.</p>
+<p>Instructions Take a look at singers and two_songs in the console.</p>
+<p>Examine the result of joining singers to two_songs. Add a filter() call to the pipe to remove NA’s from the key column of two_songs before calling inner_join().</p>
+<pre class="r"><code># Examine the result of joining singers to two_songs
+two_songs</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##                  song              movie
+##                 &lt;chr&gt;              &lt;chr&gt;
+## 1            Do-Re-Mi The Sound of Music
+## 2 A Spoonful of Sugar               &lt;NA&gt;</code></pre>
+<pre class="r"><code>singers</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##                movie                singer
+##                &lt;chr&gt;                 &lt;chr&gt;
+## 1               &lt;NA&gt; Arnold Schwarzenegger
+## 2 The Sound of Music         Julie Andrews</code></pre>
+<pre class="r"><code>two_songs %&gt;% inner_join(singers, by = &quot;movie&quot;)</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##                  song              movie                singer
+##                 &lt;chr&gt;              &lt;chr&gt;                 &lt;chr&gt;
+## 1            Do-Re-Mi The Sound of Music         Julie Andrews
+## 2 A Spoonful of Sugar               &lt;NA&gt; Arnold Schwarzenegger</code></pre>
+<pre class="r"><code># Remove NA's from key before joining
+two_songs %&gt;% 
+  filter(!is.na(movie)) %&gt;% 
+  inner_join(singers, by = &quot;movie&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 3
+##       song              movie        singer
+##      &lt;chr&gt;              &lt;chr&gt;         &lt;chr&gt;
+## 1 Do-Re-Mi The Sound of Music Julie Andrews</code></pre>
+</div>
+<div id="a-subset-of-keys" class="section level3">
+<h3>A subset of keys</h3>
+<p>Often the same column name will be used by two datasets to refer to different things. For example, the data frame movie_studios uses name to refer to the name of a movie studio. movie_years uses name to refer to the name of an actor.</p>
+<p>You could join these datasets (they describe the same movies), but you wouldn’t want to use the name column to do so!</p>
+<p>dplyr will ignore duplicate column names if you set the by argument and do not include the duplicated name in the argument. When you do this, dplyr will treat the columns in the normal fashion, but it will add .x and .y to the duplicated names to help you tell the columns apart.</p>
+<p>Instructions Left join movie_studios to movie_years by the movie column. What happens to the duplicated column names? Use rename() to rename the name column of movie_years to artist, and the name column of movie_studios to studio. As an example, rename(data, new_name = old_name) renames old_name to new_name in data.</p>
+<pre class="r"><code>movie_years</code></pre>
+<pre><code>## # A tibble: 10 x 3
+##                      movie          name  year
+##                      &lt;chr&gt;         &lt;chr&gt; &lt;int&gt;
+##  1     The Road to Morocco   Bing Crosby  1942
+##  2            Going My Way   Bing Crosby  1944
+##  3          Anchors Aweigh Frank Sinatra  1945
+##  4 Till the Clouds Roll By Frank Sinatra  1946
+##  5         White Christmas   Bing Crosby  1954
+##  6         The Tender Trap Frank Sinatra  1955
+##  7            High Society   Bing Crosby  1956
+##  8       The Joker is Wild Frank Sinatra  1957
+##  9                Pal Joey Frank Sinatra  1957
+## 10                 Can-Can Frank Sinatra  1960</code></pre>
+<pre class="r"><code>movie_studios</code></pre>
+<pre><code>## # A tibble: 10 x 2
+##                      movie                  name
+##                      &lt;chr&gt;                 &lt;chr&gt;
+##  1     The Road to Morocco    Paramount Pictures
+##  2            Going My Way    Paramount Pictures
+##  3          Anchors Aweigh   Metro-Goldwyn-Mayer
+##  4 Till the Clouds Roll By   Metro-Goldwyn-Mayer
+##  5         White Christmas    Paramount Pictures
+##  6         The Tender Trap   Metro-Goldwyn-Mayer
+##  7            High Society   Metro-Goldwyn-Mayer
+##  8       The Joker is Wild    Paramount Pictures
+##  9                Pal Joey     Columbia Pictures
+## 10                 Can-Can Twentieth-Century Fox</code></pre>
+<pre class="r"><code>movie_years %&gt;% 
+  # Left join movie_studios to movie_years
+  left_join(movie_studios, by = &quot;movie&quot;) %&gt;% 
+  # Rename the columns: artist and studio
+  rename(artist = name.x, studio = name.y)</code></pre>
+<pre><code>## # A tibble: 10 x 4
+##                      movie        artist  year                studio
+##                      &lt;chr&gt;         &lt;chr&gt; &lt;int&gt;                 &lt;chr&gt;
+##  1     The Road to Morocco   Bing Crosby  1942    Paramount Pictures
+##  2            Going My Way   Bing Crosby  1944    Paramount Pictures
+##  3          Anchors Aweigh Frank Sinatra  1945   Metro-Goldwyn-Mayer
+##  4 Till the Clouds Roll By Frank Sinatra  1946   Metro-Goldwyn-Mayer
+##  5         White Christmas   Bing Crosby  1954    Paramount Pictures
+##  6         The Tender Trap Frank Sinatra  1955   Metro-Goldwyn-Mayer
+##  7            High Society   Bing Crosby  1956   Metro-Goldwyn-Mayer
+##  8       The Joker is Wild Frank Sinatra  1957    Paramount Pictures
+##  9                Pal Joey Frank Sinatra  1957     Columbia Pictures
+## 10                 Can-Can Frank Sinatra  1960 Twentieth-Century Fox</code></pre>
+<p>Mis-matched key names</p>
+<p>Just as the same name can refer to different things in different datasets, different names can refer to the same thing. For example, elvis_movies and elvis_songs both describe movies starring Elvis Presley, but each uses a different column name to describe the name of the movie.</p>
+<p>This type of inconsistency can be frustrating when you wish to join data based on the inconsistently named variable.</p>
+<p>To make the join, set by to a named vector. The names of the vector will refer to column names in the primary dataset (x). The values of the vector will correspond to the column names in the secondary dataset (y), e.g.</p>
+<p>x %&gt;% left_join(y, by = c(“x.name1” = “y.name2”)) dplyr will make the join and retain the names in the primary dataset.</p>
+<p>Instructions Identify the column in elvis_songs that corresponds to a column in elvis_movies. Left join elvis_songs to elvis_movies by this column. Use rename() to give the result the column names movie, year, and song.</p>
+<pre class="r"><code># Identify the key column
+elvis_songs</code></pre>
+<pre><code>## # A tibble: 5 x 2
+##                                   name          movie
+##                                  &lt;chr&gt;          &lt;chr&gt;
+## 1 (You're So Square) Baby I Don't Care Jailhouse Rock
+## 2         I Can't Help Falling in Love    Blue Hawaii
+## 3                       Jailhouse Rock Jailhouse Rock
+## 4                       Viva Las Vegas Viva Las Vegas
+## 5                    You Don't Know Me       Clambake</code></pre>
+<pre class="r"><code>elvis_movies</code></pre>
+<pre><code>## # A tibble: 4 x 2
+##             name  year
+##            &lt;chr&gt; &lt;int&gt;
+## 1 Jailhouse Rock  1957
+## 2    Blue Hawaii  1961
+## 3 Viva Las Vegas  1963
+## 4       Clambake  1967</code></pre>
+<pre class="r"><code>elvis_movies %&gt;% 
+  # Left join elvis_songs to elvis_movies by this column
+  left_join(elvis_songs, by = c(&quot;name&quot; = &quot;movie&quot;)) %&gt;% 
+  # Rename columns
+  rename(movie = name, song = name.y)</code></pre>
+<pre><code>## # A tibble: 5 x 3
+##            movie  year                                 song
+##            &lt;chr&gt; &lt;int&gt;                                &lt;chr&gt;
+## 1 Jailhouse Rock  1957 (You're So Square) Baby I Don't Care
+## 2 Jailhouse Rock  1957                       Jailhouse Rock
+## 3    Blue Hawaii  1961         I Can't Help Falling in Love
+## 4 Viva Las Vegas  1963                       Viva Las Vegas
+## 5       Clambake  1967                    You Don't Know Me</code></pre>
+<p>More mismatched names</p>
+<p>Now, you’ll practice what you learned in the last exercise.</p>
+<p>movie_years and movie_directors both describe movies that feature Frank Sinatra and Bing Crosby. However, each data frame uses different column names to refer to the key variables that connect the datasets.</p>
+<p>Can you join the data?</p>
+<p>Instructions Identify the key columns that connect movie_directors to movie_years. Left join movie_directors to movie_years. Use select() to arrange the columns in the following order with the following names: year, movie, artist, director, studio.</p>
+<pre class="r"><code># Identify the key columns
+movie_directors</code></pre>
+<pre><code>## # A tibble: 10 x 3
+##                       name        director                studio
+##                      &lt;chr&gt;           &lt;chr&gt;                 &lt;chr&gt;
+##  1          Anchors Aweigh   George Sidney   Metro-Goldwyn-Mayer
+##  2                 Can-Can     Walter Lang Twentieth-Century Fox
+##  3            Going My Way     Leo McCarey    Paramount Pictures
+##  4            High Society Charles Walters   Metro-Goldwyn-Mayer
+##  5                Pal Joey   George Sidney     Columbia Pictures
+##  6       The Joker is Wild   Charles Vidor    Paramount Pictures
+##  7     The Road to Morocco    David Butler    Paramount Pictures
+##  8         The Tender Trap Charles Walters   Metro-Goldwyn-Mayer
+##  9 Till the Clouds Roll By   Richard Whorf   Metro-Goldwyn-Mayer
+## 10         White Christmas  Michael Curtiz    Paramount Pictures</code></pre>
+<pre class="r"><code>movie_years</code></pre>
+<pre><code>## # A tibble: 10 x 3
+##                      movie          name  year
+##                      &lt;chr&gt;         &lt;chr&gt; &lt;int&gt;
+##  1     The Road to Morocco   Bing Crosby  1942
+##  2            Going My Way   Bing Crosby  1944
+##  3          Anchors Aweigh Frank Sinatra  1945
+##  4 Till the Clouds Roll By Frank Sinatra  1946
+##  5         White Christmas   Bing Crosby  1954
+##  6         The Tender Trap Frank Sinatra  1955
+##  7            High Society   Bing Crosby  1956
+##  8       The Joker is Wild Frank Sinatra  1957
+##  9                Pal Joey Frank Sinatra  1957
+## 10                 Can-Can Frank Sinatra  1960</code></pre>
+<pre class="r"><code>movie_years %&gt;% 
+  # Left join movie_directors to movie_years
+  left_join(movie_directors, by = c(&quot;movie&quot; = &quot;name&quot; )) %&gt;%
+  rename(artist = name) %&gt;% 
+  # Arrange the columns using select()
+  select(year, movie, artist, director, studio)</code></pre>
+<pre><code>## # A tibble: 10 x 5
+##     year                   movie        artist        director
+##    &lt;int&gt;                   &lt;chr&gt;         &lt;chr&gt;           &lt;chr&gt;
+##  1  1942     The Road to Morocco   Bing Crosby    David Butler
+##  2  1944            Going My Way   Bing Crosby     Leo McCarey
+##  3  1945          Anchors Aweigh Frank Sinatra   George Sidney
+##  4  1946 Till the Clouds Roll By Frank Sinatra   Richard Whorf
+##  5  1954         White Christmas   Bing Crosby  Michael Curtiz
+##  6  1955         The Tender Trap Frank Sinatra Charles Walters
+##  7  1956            High Society   Bing Crosby Charles Walters
+##  8  1957       The Joker is Wild Frank Sinatra   Charles Vidor
+##  9  1957                Pal Joey Frank Sinatra   George Sidney
+## 10  1960                 Can-Can Frank Sinatra     Walter Lang
+## # ... with 1 more variables: studio &lt;chr&gt;</code></pre>
+<p>Join multiple tables</p>
+<p>purrr’s reduce() function is very useful for joining together multiple datasets. Let’s practice using it with three new datasets.</p>
+<p>supergroups lists the members of several “supergroup” bands, which are bands made from the members of other famous bands. more_bands lists the original band membership of many musicians, including those in supergroups. And more_artists lists the instruments that various artists played.</p>
+<p>Can you join these datasets into a single, coherent dataset?</p>
+<p>Instructions Load the purrr library. Place supergroups, more_bands, and more_artists into a list, in that order. Use reduce() to join together supergroups, more_bands, and more_artists into a dataset that contains all available information about each artist in supergroups (and no others).</p>
+<pre class="r"><code># Load the purrr library
+library(&quot;purrr&quot;)
+
+supergroups</code></pre>
+<pre><code>## # A tibble: 16 x 3
+##                         supergroup   first          last
+##                              &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;
+##  1                           Cream  Ginger         Baker
+##  2                           Cream    Jack         Bruce
+##  3                           Cream    Eric       Clapton
+##  4 Crosby, Stills, Nash, and Young   David        Crosby
+##  5 Crosby, Stills, Nash, and Young  Graham          Nash
+##  6 Crosby, Stills, Nash, and Young Stephen        Stills
+##  7 Crosby, Stills, Nash, and Young    Neil         Young
+##  8                  The Highwaymen  Johnny          Cash
+##  9                  The Highwaymen  Waylon      Jennings
+## 10                  The Highwaymen    Kris Kristofferson
+## 11                  The Highwaymen  Willie        Nelson
+## 12          The Traveling Wilburys     Bob         Dylan
+## 13          The Traveling Wilburys  George      Harrison
+## 14          The Traveling Wilburys    Jeff         Lynne
+## 15          The Traveling Wilburys     Roy       Orbison
+## 16          The Traveling Wilburys     Tom         Petty</code></pre>
+<pre class="r"><code>more_bands</code></pre>
+<pre><code>## # A tibble: 42 x 3
+##                        band   first   last
+##                       &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;
+##  1      Buffalo Springfield Stephen Stills
+##  2      Buffalo Springfield   Dewey Martin
+##  3      Buffalo Springfield   Bruce Palmer
+##  4      Buffalo Springfield  Richie  Furay
+##  5      Buffalo Springfield    Neil  Young
+##  6 Electric Light Orchestra     Roy   Wood
+##  7 Electric Light Orchestra    Jeff  Lynne
+##  8 Electric Light Orchestra     Bev  Bevan
+##  9 Graham Bond Organisation  Graham   Bond
+## 10 Graham Bond Organisation    Jack  Bruce
+## # ... with 32 more rows</code></pre>
+<pre class="r"><code>more_artists</code></pre>
+<pre><code>## # A tibble: 48 x 3
+##      first            last instrument
+##      &lt;chr&gt;           &lt;chr&gt;      &lt;chr&gt;
+##  1   Allan          Clarke     vocals
+##  2 Benmont           Tench  keyboards
+##  3     Bev           Bevan      drums
+##  4     Bob           Dylan     guitar
+##  5   Bruce          Palmer       bass
+##  6   Chris           Dreja     guitar
+##  7   Chris         Hillman       bass
+##  8   David          Crosby     guitar
+##  9   Dewey          Martin      drums
+## 10    Dick Heckstall-Smith  saxophone
+## # ... with 38 more rows</code></pre>
+<pre class="r"><code># Place supergroups, more_bands, and more_artists into a list
+list(supergroups, more_bands, more_artists) %&gt;% 
+  # Use reduce to join together the contents of the list
+  reduce(left_join, by = c(&quot;first&quot;, &quot;last&quot;))</code></pre>
+<pre><code>## # A tibble: 19 x 5
+##                         supergroup   first          last
+##                              &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;
+##  1                           Cream  Ginger         Baker
+##  2                           Cream    Jack         Bruce
+##  3                           Cream    Jack         Bruce
+##  4                           Cream    Jack         Bruce
+##  5                           Cream    Jack         Bruce
+##  6                           Cream    Eric       Clapton
+##  7 Crosby, Stills, Nash, and Young   David        Crosby
+##  8 Crosby, Stills, Nash, and Young  Graham          Nash
+##  9 Crosby, Stills, Nash, and Young Stephen        Stills
+## 10 Crosby, Stills, Nash, and Young    Neil         Young
+## 11                  The Highwaymen  Johnny          Cash
+## 12                  The Highwaymen  Waylon      Jennings
+## 13                  The Highwaymen    Kris Kristofferson
+## 14                  The Highwaymen  Willie        Nelson
+## 15          The Traveling Wilburys     Bob         Dylan
+## 16          The Traveling Wilburys  George      Harrison
+## 17          The Traveling Wilburys    Jeff         Lynne
+## 18          The Traveling Wilburys     Roy       Orbison
+## 19          The Traveling Wilburys     Tom         Petty
+## # ... with 2 more variables: band &lt;chr&gt;, instrument &lt;chr&gt;</code></pre>
+<p>Filter multiple tables</p>
+<p>Nice work! The job of reduce() is to apply a function in an iterative fashion to many datasets. As a result, reduce() works well with all of the dplyr join functions.</p>
+<p>For example, you can use reduce() to filter observations with a filtering join.</p>
+<p>Instructions Use reduce() to return just the rows of more_artists that appear in all three datasets.</p>
+<pre class="r"><code>list(more_artists, more_bands, supergroups) %&gt;% 
+  # Return rows of more_artists in all three datasets
+  reduce(semi_join, by = c(&quot;first&quot;, &quot;last&quot;))</code></pre>
+<pre><code>## # A tibble: 11 x 3
+##      first     last instrument
+##      &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;
+##  1   David   Crosby     guitar
+##  2    Eric  Clapton     guitar
+##  3  George Harrison     guitar
+##  4  Ginger    Baker      drums
+##  5  Graham     Nash     guitar
+##  6    Jack    Bruce       bass
+##  7    Jack    Bruce       bass
+##  8    Jeff    Lynne     vocals
+##  9    Neil    Young     guitar
+## 10 Stephen   Stills     guitar
+## 11     Tom    Petty     vocals</code></pre>
+<p>Base R</p>
+<p>dplyr joins are also similar to the merge() function in base R.</p>
+<p>For example, the code in the editor uses merge() and arrange() to perform a left_join() on bands and artists.</p>
+<p>Instructions Alter the code to perform the join with a dplyr function. Remove arrange() if your solution does not need it.</p>
+<pre class="r"><code># Alter the code to perform the join with a dplyr function
+merge(bands, artists, by = c(&quot;first&quot;, &quot;last&quot;), all.x = TRUE) %&gt;%
+  arrange(band)</code></pre>
+<pre><code>##        first      last               band instrument
+## 1      Jimmy      Page       Led Zeppelin     Guitar
+## 2       John    Bonham       Led Zeppelin       &lt;NA&gt;
+## 3  John Paul     Jones       Led Zeppelin       &lt;NA&gt;
+## 4     Robert     Plant       Led Zeppelin       &lt;NA&gt;
+## 5     George  Harrison        The Beatles     Guitar
+## 6       John    Lennon        The Beatles     Guitar
+## 7       Paul McCartney        The Beatles       Bass
+## 8      Ringo     Starr        The Beatles      Drums
+## 9      Jimmy   Buffett  The Coral Reefers     Guitar
+## 10   Charlie     Watts The Rolling Stones       &lt;NA&gt;
+## 11     Keith  Richards The Rolling Stones     Guitar
+## 12      Mick    Jagger The Rolling Stones     Vocals
+## 13    Ronnie      Wood The Rolling Stones       &lt;NA&gt;</code></pre>
+<pre class="r"><code># Alter the code to perform the join with a dplyr function
+bands %&gt;%
+  left_join(artists, by = c(&quot;first&quot;, &quot;last&quot;)) %&gt;%
+  arrange(band)</code></pre>
+<pre><code>## # A tibble: 13 x 4
+##        first      last               band instrument
+##        &lt;chr&gt;     &lt;chr&gt;              &lt;chr&gt;      &lt;chr&gt;
+##  1      John    Bonham       Led Zeppelin       &lt;NA&gt;
+##  2 John Paul     Jones       Led Zeppelin       &lt;NA&gt;
+##  3     Jimmy      Page       Led Zeppelin     Guitar
+##  4    Robert     Plant       Led Zeppelin       &lt;NA&gt;
+##  5    George  Harrison        The Beatles     Guitar
+##  6      John    Lennon        The Beatles     Guitar
+##  7      Paul McCartney        The Beatles       Bass
+##  8     Ringo     Starr        The Beatles      Drums
+##  9     Jimmy   Buffett  The Coral Reefers     Guitar
+## 10      Mick    Jagger The Rolling Stones     Vocals
+## 11     Keith  Richards The Rolling Stones     Guitar
+## 12   Charlie     Watts The Rolling Stones       &lt;NA&gt;
+## 13    Ronnie      Wood The Rolling Stones       &lt;NA&gt;</code></pre>
+</div>
 </div>
 <div id="case-study" class="section level2">
 <h2>Case study</h2>
